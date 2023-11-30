@@ -1,0 +1,110 @@
+def open_chrome() :
+    import os
+    os.system("start chrome")
+def open_notepad() :
+    import os
+    os.system('notepad')  
+def text_speech(text) :
+    import pyttsx3 
+    engine = pyttsx3.init()
+    engine.say(text) 
+    engine.runAndWait() 
+def send_whatsapp(phone_number, msg: str):
+    import time
+    import pywhatkit
+    import pyautogui
+    try:
+        pywhatkit.sendwhatmsg_instantly(phone_no=phone_number, message=msg, tab_close=True)
+        time.sleep(10)
+        pyautogui.click()
+        time.sleep(2)
+        pyautogui.press('enter')
+        print("Message sent!")
+    except Exception as e:
+        print(str(e))
+def send_email(email,receiver_email,subject,message):
+    import smtplib
+    text = f"Subject: {subject}\n\n{message}"
+    server = smtplib.SMTP("smtp.gmail.com",587)
+    server.starttls()
+    server.login(email,"Google ~ App Password" )
+    server.sendmail(email, receiver_email, text)
+    print("Email has been sent to " + receiver_email)
+def wikipedia_info(topic):
+    import wikipedia
+    print(wikipedia.page(topic).content)
+def Send_sms(your_account_sid,your_auth_token,twilio_phone_number,recipient_phone_number,Body):
+    from twilio.rest import Client
+    account_sid = your_account_sid
+    auth_token = your_auth_token
+    client = Client(account_sid, auth_token)
+    message = client.messages.create(
+    body=Body,
+    from_=twilio_phone_number,
+    to=recipient_phone_number
+    )
+    print(f"Message SID: {message.sid}")
+def geo_location():
+    import geocoder
+    g = geocoder.ip('me')
+    print(g.latlng)
+while True:
+    print("\t\t\t\t\t Welcome To My Project")
+    print("""
+Press 1: Send Sms
+Press 2: Send Email
+Press 3: Send Whatsapp message
+Press 4: To open chrome
+Press 5: To open notepad
+Press 6: To give Wikipedia information
+Press 7: To mark Location
+Press 8: To convert text to speech
+Press 9: To Exit
+    """)
+    try:
+        User_Choice = int(input("Enter your choice: "))
+    except ValueError:
+        pass
+        continue
+
+    if User_Choice == 1:
+        your_account_sid = input("Enter your account sid: ")  
+        your_auth_token = input("Enter your auth token: ")
+        twilio_phone_number = input("Enter your twilio phone number: ")
+        recipient_phone_number = input("Enter the recipient's phone number: ")
+        Body = input("Enter the body of the sms: ")
+        Send_sms(your_account_sid,your_auth_token,twilio_phone_number,recipient_phone_number,Body)
+        
+    elif User_Choice == 2:
+        email = input("Sender Email: ")
+        receiver_email = input("Receiver Email: ")
+        subject = input("Subject: ")
+        message = input("Message: ")
+        send_email(subject, message, email, receiver_email)
+
+    elif User_Choice == 3:
+        phone_number = input("Enter phone number: ")
+        message = input("Enter the message: ")
+        if __name__ == "__main__":
+            send_whatsapp(phone_number,msg=message)  
+
+    elif User_Choice == 4:
+        open_chrome()
+    
+    elif User_Choice == 5:
+        open_notepad()
+
+    elif User_Choice == 6:
+        topic = input("Enter the topic: ")
+        wikipedia_info(topic)
+
+    elif User_Choice == 7:
+        geo_location()
+
+    elif User_Choice == 8:
+        text = input("Enter the text for speech: ")
+        text_speech(text)
+
+    elif User_Choice == 9:
+        break
+
